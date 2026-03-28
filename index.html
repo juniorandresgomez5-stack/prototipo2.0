@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Prototipo WebAR Educativo</title>
+    <meta
+      name="description"
+      content="Prototipo de realidad aumentada web con registro de interesados conectado a Firebase y Netlify."
+    />
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.js"></script>
+    <script src="./app.js" defer></script>
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="hero-card" id="intro">
+        <p class="eyebrow">Politecnico Colombo Andino</p>
+        <h1>Prototipo educativo de realidad aumentada web</h1>
+        <p class="lead">
+          Esta prueba de concepto demuestra que es posible visualizar contenido
+          3D educativo desde el navegador, usando la camara del dispositivo y un
+          marcador visual, sin instalar aplicaciones adicionales.
+        </p>
+
+        <div class="feature-list">
+          <div class="feature-item">
+            <strong>Acceso simple</strong>
+            <span>Abre el enlace desde tu navegador movil o de escritorio.</span>
+          </div>
+          <div class="feature-item">
+            <strong>Uso de camara</strong>
+            <span>Permite el acceso a la camara cuando el navegador lo solicite.</span>
+          </div>
+          <div class="feature-item">
+            <strong>Marcador Hiro</strong>
+            <span>Apunta la camara al marcador para activar la experiencia RA.</span>
+          </div>
+        </div>
+
+        <a class="primary-link" href="#experience">Ir a la experiencia WebAR</a>
+      </section>
+
+      <section class="instructions-card">
+        <h2>Como probar el prototipo</h2>
+        <ol>
+          <li>Abre esta pagina y concede permiso para usar la camara.</li>
+          <li>Desplazate hasta la experiencia WebAR.</li>
+          <li>Apunta la camara al marcador Hiro.</li>
+          <li>Observa el modelo 3D y muevete alrededor para verlo desde distintos angulos.</li>
+        </ol>
+        <p class="helper-text">
+          Este prototipo usa herramientas gratuitas y de codigo abierto, por lo que
+          resulta adecuado para contextos educativos de bajo costo.
+        </p>
+      </section>
+
+      <section class="marker-card">
+        <h2>Marcador recomendado</h2>
+        <p>
+          La escena esta configurada con el marcador clasico
+          <strong>Hiro</strong>. Puedes visualizarlo o imprimirlo desde este
+          enlace:
+        </p>
+        <p>
+          <a
+            href="https://raw.githubusercontent.com/AR-js-org/AR.js/master/data/images/HIRO.jpg"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Abrir marcador Hiro
+          </a>
+        </p>
+      </section>
+
+      <section class="signup-card" id="registro">
+        <div class="section-heading">
+          <p class="eyebrow">Base de datos activa</p>
+          <h2>Registrar interesados en Firebase</h2>
+        </div>
+        <p class="helper-text">
+          Este formulario envia la informacion a una Function de Netlify, y esa
+          Function guarda el registro en Firestore dentro de Firebase.
+        </p>
+
+        <form class="interest-form" data-interest-form>
+          <label>
+            Nombre
+            <input type="text" name="name" placeholder="Tu nombre" required />
+          </label>
+
+          <label>
+            Correo
+            <input type="email" name="email" placeholder="correo@ejemplo.com" />
+          </label>
+
+          <label>
+            Rol
+            <select name="role" required>
+              <option value="">Selecciona una opcion</option>
+              <option value="docente">Docente</option>
+              <option value="estudiante">Estudiante</option>
+              <option value="directivo">Directivo</option>
+              <option value="otro">Otro</option>
+            </select>
+          </label>
+
+          <label>
+            Comentarios
+            <textarea
+              name="notes"
+              rows="4"
+              placeholder="Que te gustaria probar o medir con este prototipo"
+            ></textarea>
+          </label>
+
+          <button type="submit" class="primary-button">Guardar en Firebase</button>
+          <p class="form-status" data-form-status data-state="idle">
+            Completa el formulario para probar la conexion con la base de datos.
+          </p>
+        </form>
+      </section>
+    </main>
+
+    <section class="experience-wrapper" id="experience">
+      <div class="experience-header">
+        <div>
+          <p class="eyebrow">Experiencia en vivo</p>
+          <h2>Figura geometrica en realidad aumentada</h2>
+        </div>
+        <p class="experience-note">
+          Si no ves el modelo, verifica el permiso de camara y acerca el marcador Hiro al encuadre.
+        </p>
+      </div>
+
+      <div class="ar-stage">
+        <div class="overlay-panel">
+          <span class="status-dot"></span>
+          <p>Estado esperado: camara activa y marcador detectado.</p>
+        </div>
+
+        <a-scene
+          embedded
+          vr-mode-ui="enabled: false"
+          renderer="antialias: true; alpha: true"
+          arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
+        >
+          <a-marker preset="hiro">
+            <a-entity
+              position="0 0.5 0"
+              animation="property: rotation; to: 0 360 0; loop: true; dur: 8000; easing: linear"
+            >
+              <a-entity
+                geometry="primitive: torusKnot; radius: 0.18; radiusTubular: 0.03; p: 2; q: 3"
+                material="color: #f59e0b; metalness: 0.15; roughness: 0.35"
+              ></a-entity>
+              <a-entity
+                position="0 0.42 0"
+                text="value: Figura geometrica 3D; align: center; color: #ffffff; width: 2.2"
+              ></a-entity>
+              <a-entity
+                position="0 0.22 0"
+                text="value: Recurso educativo accesible; align: center; color: #dbeafe; width: 2.3"
+              ></a-entity>
+            </a-entity>
+          </a-marker>
+
+          <a-entity camera></a-entity>
+        </a-scene>
+      </div>
+    </section>
+  </body>
+</html>

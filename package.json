@@ -1,0 +1,9 @@
+{
+  "name": "prototipo-webar-educativo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sitio estatico con funcion de Netlify para guardar registros en Firebase Firestore.",
+  "dependencies": {
+    "firebase-admin": "^12.7.0"
+  }
+}
