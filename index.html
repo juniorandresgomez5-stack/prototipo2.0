@@ -6,12 +6,12 @@
     <title>Prototipo WebAR Educativo</title>
     <meta
       name="description"
-      content="Prototipo de realidad aumentada web con registro de interesados conectado a Firebase y Netlify."
+      content="Prototipo de realidad aumentada web con registro de interesados conectado a Firebase y GitHub Pages."
     />
     <link rel="stylesheet" href="./styles.css" />
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.js"></script>
-    <script src="./app.js" defer></script>
+    <script type="module" src="./app.js"></script>
   </head>
   <body>
     <main class="app-shell">
@@ -80,8 +80,8 @@
           <h2>Registrar interesados en Firebase</h2>
         </div>
         <p class="helper-text">
-          Este formulario envia la informacion a una Function de Netlify, y esa
-          Function guarda el registro en Firestore dentro de Firebase.
+          Este formulario envia la informacion directamente desde GitHub Pages
+          hacia Firestore dentro de Firebase.
         </p>
 
         <form class="interest-form" data-interest-form>
