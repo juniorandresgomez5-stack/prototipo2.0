@@ -4,187 +4,210 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#fff4e8" />
-    <title>PoliAR Edu | Prototipo WebAR Educativo</title>
+    <title>PoliAR Edu | Marcadores</title>
     <meta
       name="description"
-      content="Prototipo WebAR de bajo costo para visualizar contenido educativo en realidad aumentada desde el navegador."
+      content="Menu de marcadores educativos para abrir la experiencia WebAR en otra pestana."
     />
     <link rel="stylesheet" href="./styles.css" />
-    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.js"></script>
   </head>
   <body>
     <main class="page-shell">
-      <section class="hero-panel">
+      <section class="hero-panel landing-panel">
         <div class="hero-copy">
           <p class="eyebrow">Politecnico Colombo Andino</p>
+          <h1>Menu de marcadores educativos</h1>
+          <p class="landing-copy">
+            Este prototipo permite que el usuario escoja un marcador educativo,
+            abra la experiencia de camara en otra pestana y luego apunte a ese
+            marcador para visualizar el contenido correspondiente.
+          </p>
           <div class="hero-actions">
-            <a class="button-primary" href="#experiencia">Probar experiencia</a>
             <a
-              class="button-secondary"
-              href="https://raw.githubusercontent.com/AR-js-org/AR.js/master/data/images/HIRO.jpg"
+              class="button-primary"
+              href="./experiencia.html"
               target="_blank"
               rel="noreferrer"
             >
-              Abrir marcador Hiro
+              Abrir experiencia con camara
             </a>
           </div>
         </div>
       </section>
-    </main>
 
-    <section class="experience-section" id="experiencia">
-      <div class="experience-header">
-        <div>
-          <p class="eyebrow">Experiencia WebAR</p>
-          <h2>Modelo educativo 3D sobre marcador</h2>
-        </div>
-        <p class="experience-copy">
-          El modelo representa un mini sistema planetario para demostrar como un
-          objeto educativo puede superponerse al entorno fisico en tiempo real.
-        </p>
-      </div>
-
-      <div class="experience-stage">
-        <div class="overlay-banner" id="live-banner">
-          <span class="status-light" id="status-light"></span>
-          <p id="live-message">Cargando escena WebAR...</p>
-        </div>
-
-        <div class="qr-panel">
-          <div class="qr-copy">
-            <p class="eyebrow">Lector QR</p>
-            <h3>Abre la camara y escanea un codigo QR</h3>
-            <p>
-              Si el QR contiene una imagen o un enlace directo a una imagen,
-              la vista previa se mostrara aqui mismo.
+      <section class="experience-section">
+        <div class="marker-menu">
+          <div class="marker-menu-header">
+            <div>
+              <p class="eyebrow">Marcadores disponibles</p>
+              <h2>Escoge el marcador que quieras visualizar</h2>
+            </div>
+            <p class="marker-menu-copy">
+              Cada marcador esta asociado a un recurso educativo distinto. Abre
+              el marcador, luego abre la experiencia en otra pestana y leelo con
+              la camara.
             </p>
           </div>
 
-          <div class="qr-actions">
-            <button class="button-primary qr-button" id="start-qr-scan" type="button">
-              Abrir camara para QR
-            </button>
-            <p class="qr-status" id="qr-status">
-              Pulsa el boton para activar la camara y leer el codigo QR.
-            </p>
-          </div>
-
-          <div class="qr-scanner" id="qr-scanner">
-            <video
-              id="qr-video"
-              class="qr-video"
-              autoplay
-              playsinline
-              muted
-            ></video>
-            <div class="qr-frame" aria-hidden="true"></div>
-          </div>
-
-          <div class="qr-result" id="qr-result" hidden>
-            <p class="qr-result-label">Imagen detectada desde el QR</p>
-            <img
-              id="qr-image-preview"
-              class="qr-image-preview"
-              alt="Imagen cargada desde el codigo QR"
-            />
-            <a
-              id="qr-image-link"
-              class="button-secondary"
-              href="#"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Abrir imagen en otra pestana
-            </a>
-          </div>
-        </div>
-
-        <div class="ar-launcher">
-          <button class="button-secondary" id="start-ar-experience" type="button">
-            Activar experiencia AR
-          </button>
-          <p class="qr-status" id="ar-status">
-            El lector QR tiene prioridad. Cuando termines, puedes abrir la experiencia AR.
-          </p>
-        </div>
-
-        <div id="ar-scene-mount" class="ar-scene-mount"></div>
-        <template id="ar-scene-template">
-          <a-scene
-            id="ar-scene"
-            embedded
-            vr-mode-ui="enabled: false"
-            renderer="antialias: true; alpha: true; precision: medium;"
-            arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
-          >
-            <a-marker id="hiro-marker" preset="hiro">
-              <a-entity
-                position="0 0.1 0"
-                rotation="-90 0 0"
-                animation="property: rotation; to: -90 360 0; loop: true; dur: 14000; easing: linear"
+          <div class="marker-grid">
+            <article class="marker-card">
+              <img
+                class="marker-image"
+                src="https://raw.githubusercontent.com/AR-js-org/AR.js/master/data/images/HIRO.jpg"
+                alt="Marcador Hiro"
+              />
+              <div class="marker-lesson">
+                <p class="marker-label">Contenido educativo</p>
+                <img
+                  class="lesson-image"
+                  src="https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&w=900&q=80"
+                  alt="Sistema solar"
+                />
+              </div>
+              <h3>Hiro</h3>
+              <p class="marker-description">Tema: sistema solar y orbitas planetarias.</p>
+              <a
+                class="button-secondary"
+                href="https://raw.githubusercontent.com/AR-js-org/AR.js/master/data/images/HIRO.jpg"
+                target="_blank"
+                rel="noreferrer"
               >
-                <a-sphere radius="0.16" color="#f59e0b" emissive="#f59e0b"></a-sphere>
-                <a-sphere position="0.35 0 0" radius="0.04" color="#60a5fa"></a-sphere>
-                <a-ring
-                  position="0 0 0"
-                  radius-inner="0.34"
-                  radius-outer="0.345"
-                  color="#6b7280"
-                ></a-ring>
-                <a-sphere position="-0.52 0 0" radius="0.055" color="#34d399"></a-sphere>
-                <a-ring
-                  position="0 0 0"
-                  radius-inner="0.515"
-                  radius-outer="0.52"
-                  color="#94a3b8"
-                ></a-ring>
-                <a-sphere position="0 0 0.7" radius="0.07" color="#f87171"></a-sphere>
-                <a-ring
-                  position="0 0 0"
-                  radius-inner="0.695"
-                  radius-outer="0.7"
-                  color="#cbd5e1"
-                ></a-ring>
-              </a-entity>
+                Abrir marcador
+              </a>
+            </article>
 
-              <a-entity
-                position="0 0.65 0"
-                text="value: Sistema solar educativo; align: center; color: #f8fafc; width: 2.4"
-              ></a-entity>
-              <a-entity
-                position="0 0.48 0"
-                text="value: WebAR accesible y de bajo costo; align: center; color: #cbd5e1; width: 2.6"
-              ></a-entity>
-            </a-marker>
+            <article class="marker-card">
+              <img
+                class="marker-image"
+                src="https://raw.githubusercontent.com/nicolocarpignoli/artoolkit-barcode-markers-collection/master/4x4_bch_13_9_3/0.png"
+                alt="Marcador Barcode 0"
+              />
+              <div class="marker-lesson">
+                <p class="marker-label">Contenido educativo</p>
+                <img
+                  class="lesson-image"
+                  src="https://images.unsplash.com/photo-1532187643603-ba119ca4109e?auto=format&fit=crop&w=900&q=80"
+                  alt="Geometria"
+                />
+              </div>
+              <h3>Barcode 0</h3>
+              <p class="marker-description">Tema: figuras geometricas y volumen.</p>
+              <a
+                class="button-secondary"
+                href="https://raw.githubusercontent.com/nicolocarpignoli/artoolkit-barcode-markers-collection/master/4x4_bch_13_9_3/0.png"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Abrir marcador
+              </a>
+            </article>
 
-            <a-entity camera></a-entity>
-          </a-scene>
-        </template>
-      </div>
+            <article class="marker-card">
+              <img
+                class="marker-image"
+                src="https://raw.githubusercontent.com/nicolocarpignoli/artoolkit-barcode-markers-collection/master/4x4_bch_13_9_3/1.png"
+                alt="Marcador Barcode 1"
+              />
+              <div class="marker-lesson">
+                <p class="marker-label">Contenido educativo</p>
+                <img
+                  class="lesson-image"
+                  src="https://images.unsplash.com/photo-1530026186672-2cd00ffc50fe?auto=format&fit=crop&w=900&q=80"
+                  alt="Biologia"
+                />
+              </div>
+              <h3>Barcode 1</h3>
+              <p class="marker-description">Tema: celulas, biologia y estructura viva.</p>
+              <a
+                class="button-secondary"
+                href="https://raw.githubusercontent.com/nicolocarpignoli/artoolkit-barcode-markers-collection/master/4x4_bch_13_9_3/1.png"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Abrir marcador
+              </a>
+            </article>
 
-      <div class="tips-grid">
-        <article class="tip-card">
-          <h3>Como usarlo</h3>
-          <ol class="ordered-list">
-            <li>Abre la pagina desde tu celular o computador.</li>
-            <li>Permite el acceso a la camara cuando el navegador lo solicite.</li>
-            <li>Abre o imprime el marcador Hiro.</li>
-            <li>Apunta la camara al marcador para ver el modelo 3D.</li>
-          </ol>
-        </article>
+            <article class="marker-card">
+              <img
+                class="marker-image"
+                src="https://raw.githubusercontent.com/nicolocarpignoli/artoolkit-barcode-markers-collection/master/4x4_bch_13_9_3/2.png"
+                alt="Marcador Barcode 2"
+              />
+              <div class="marker-lesson">
+                <p class="marker-label">Contenido educativo</p>
+                <img
+                  class="lesson-image"
+                  src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80"
+                  alt="Tecnologia"
+                />
+              </div>
+              <h3>Barcode 2</h3>
+              <p class="marker-description">Tema: tecnologia, redes y transformacion digital.</p>
+              <a
+                class="button-secondary"
+                href="https://raw.githubusercontent.com/nicolocarpignoli/artoolkit-barcode-markers-collection/master/4x4_bch_13_9_3/2.png"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Abrir marcador
+              </a>
+            </article>
 
-        <article class="tip-card">
-          <h3>Valor educativo</h3>
-          <p>
-            Este formato permite explicar conceptos abstractos con apoyo visual e
-            interactivo, facilitando la comprension en areas como ciencias,
-            geometria, anatomia e historia.
-          </p>
-        </article>
-      </div>
-    </section>
+            <article class="marker-card">
+              <img
+                class="marker-image"
+                src="https://raw.githubusercontent.com/nicolocarpignoli/artoolkit-barcode-markers-collection/master/4x4_bch_13_9_3/3.png"
+                alt="Marcador Barcode 3"
+              />
+              <div class="marker-lesson">
+                <p class="marker-label">Contenido educativo</p>
+                <img
+                  class="lesson-image"
+                  src="https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&w=900&q=80"
+                  alt="Fisica"
+                />
+              </div>
+              <h3>Barcode 3</h3>
+              <p class="marker-description">Tema: fisica, energia y movimiento.</p>
+              <a
+                class="button-secondary"
+                href="https://raw.githubusercontent.com/nicolocarpignoli/artoolkit-barcode-markers-collection/master/4x4_bch_13_9_3/3.png"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Abrir marcador
+              </a>
+            </article>
 
-    <script src="./app.js"></script>
+            <article class="marker-card">
+              <img
+                class="marker-image"
+                src="https://raw.githubusercontent.com/nicolocarpignoli/artoolkit-barcode-markers-collection/master/4x4_bch_13_9_3/4.png"
+                alt="Marcador Barcode 4"
+              />
+              <div class="marker-lesson">
+                <p class="marker-label">Contenido educativo</p>
+                <img
+                  class="lesson-image"
+                  src="https://images.unsplash.com/photo-1516979187457-637abb4f9353?auto=format&fit=crop&w=900&q=80"
+                  alt="Anatomia"
+                />
+              </div>
+              <h3>Barcode 4</h3>
+              <p class="marker-description">Tema: anatomia, cuerpo humano y observacion.</p>
+              <a
+                class="button-secondary"
+                href="https://raw.githubusercontent.com/nicolocarpignoli/artoolkit-barcode-markers-collection/master/4x4_bch_13_9_3/4.png"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Abrir marcador
+              </a>
+            </article>
+          </div>
+        </div>
+      </section>
+    </main>
   </body>
 </html>

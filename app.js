@@ -20,8 +20,9 @@ let qrScanActive = false;
 let qrCanvas = null;
 let qrCanvasContext = null;
 let scene = null;
-let marker = null;
 let arStarted = false;
+let trackedMarkers = [];
+let activeMarkers = new Set();
 
 function setBannerState(type, message) {
   if (!statusLight || !liveMessage) {
@@ -67,7 +68,7 @@ function evaluateSupport() {
     );
   }
 
-  if (!("BarcodeDetector" in window)) {
+  if (qrStatus && startQrScanButton && !("BarcodeDetector" in window)) {
     qrStatus.textContent =
       "Este navegador no incluye lector QR nativo. Prueba con Chrome o Edge reciente en el celular.";
     startQrScanButton.disabled = true;
@@ -75,7 +76,7 @@ function evaluateSupport() {
 }
 
 function bindArEvents() {
-  if (!scene || !marker) {
+  if (!scene || trackedMarkers.length === 0) {
     return;
   }
 
@@ -91,21 +92,43 @@ function bindArEvents() {
     setBannerState("error", "La camara fue bloqueada o no esta disponible en este dispositivo.");
   });
 
-  marker.addEventListener("markerFound", () => {
-    markerDetected = true;
-    setBannerState("success", "Marcador detectado. El modelo 3D esta proyectado en tiempo real.");
-  });
+  trackedMarkers.forEach((trackedMarker) => {
+    const markerLabel = trackedMarker.dataset.markerLabel || "Marcador";
 
-  marker.addEventListener("markerLost", () => {
-    markerDetected = false;
-    setBannerState("info", "Marcador perdido. Vuelve a apuntar al Hiro para recuperar la escena.");
+    trackedMarker.addEventListener("markerFound", () => {
+      activeMarkers.add(markerLabel);
+      markerDetected = activeMarkers.size > 0;
+      setBannerState(
+        "success",
+        `Marcador detectado: ${markerLabel}. El contenido esta proyectado en tiempo real.`
+      );
+    });
+
+    trackedMarker.addEventListener("markerLost", () => {
+      activeMarkers.delete(markerLabel);
+      markerDetected = activeMarkers.size > 0;
+
+      if (activeMarkers.size > 0) {
+        const [nextMarker] = activeMarkers;
+        setBannerState(
+          "info",
+          `Marcador activo: ${nextMarker}. Puedes cambiar a cualquier otro del menu.`
+        );
+        return;
+      }
+
+      setBannerState(
+        "info",
+        "Marcador fuera de vista. Vuelve a apuntar a Hiro o a cualquiera del menu."
+      );
+    });
   });
 
   window.setTimeout(() => {
     if (!markerDetected) {
       setBannerState(
         "info",
-        "Permite la camara y apunta al marcador Hiro para activar el modelo 3D."
+        "Permite la camara y apunta a Hiro o a cualquiera de los marcadores del menu."
       );
     }
   }, 5000);
@@ -118,17 +141,21 @@ function mountArScene() {
 
   if (qrScanActive) {
     stopQrScanner();
-    qrStatus.textContent =
-      "Escaneo QR detenido para liberar la camara antes de abrir la experiencia AR.";
+    if (qrStatus) {
+      qrStatus.textContent =
+        "Escaneo QR detenido para liberar la camara antes de abrir la experiencia AR.";
+    }
   }
 
   arSceneMount.appendChild(arSceneTemplate.content.cloneNode(true));
   scene = document.getElementById("ar-scene");
-  marker = document.getElementById("hiro-marker");
+  trackedMarkers = Array.from(document.querySelectorAll("[data-marker-label]"));
+  activeMarkers = new Set();
   arStarted = true;
 
   if (arStatus) {
-    arStatus.textContent = "Experiencia AR activada. Permite la camara y apunta al marcador Hiro.";
+    arStatus.textContent =
+      "Experiencia AR activada. Permite la camara y apunta a Hiro o a cualquier marcador del menu.";
   }
 
   if (startArExperienceButton) {
@@ -179,6 +206,10 @@ function getImageUrlFromQrText(rawValue) {
 }
 
 function showQrImage(imageUrl) {
+  if (!qrImagePreview || !qrImageLink || !qrResult || !qrStatus) {
+    return;
+  }
+
   qrImagePreview.src = imageUrl;
   qrImageLink.href = imageUrl;
   qrResult.hidden = false;
@@ -203,8 +234,13 @@ function stopQrScanner() {
     qrVideo.srcObject = null;
   }
 
-  qrScanner.classList.remove("is-active");
-  startQrScanButton.textContent = "Abrir camara para QR";
+  if (qrScanner) {
+    qrScanner.classList.remove("is-active");
+  }
+
+  if (startQrScanButton) {
+    startQrScanButton.textContent = "Abrir camara para QR";
+  }
 }
 
 async function scanQrFrame() {
@@ -249,6 +285,17 @@ async function scanQrFrame() {
 }
 
 async function startQrScanner() {
+  if (
+    !startQrScanButton ||
+    !qrStatus ||
+    !qrVideo ||
+    !qrScanner ||
+    !qrResult ||
+    !qrImagePreview
+  ) {
+    return;
+  }
+
   if (qrScanActive) {
     stopQrScanner();
     qrStatus.textContent = "Escaneo detenido. Pulsa el boton si quieres volver a abrir la camara.";
