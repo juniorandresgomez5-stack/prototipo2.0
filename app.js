@@ -145,8 +145,12 @@ function syncArViewport() {
   const arVideo = document.querySelector(".arjs-video");
   const arCanvas = document.querySelector(".a-canvas");
   const sceneCanvas = scene ? scene.querySelector("canvas") : null;
+  const arVideoContainer =
+    arVideo && arVideo.parentElement && arVideo.parentElement !== document.body
+      ? arVideo.parentElement
+      : null;
 
-  [arVideo, arCanvas, sceneCanvas].forEach((node) => {
+  [arVideoContainer, arVideo, arCanvas, sceneCanvas].forEach((node) => {
     if (!node) {
       return;
     }
@@ -157,6 +161,13 @@ function syncArViewport() {
       arSceneMount.appendChild(node);
     }
   });
+
+  if (scene) {
+    scene.style.position = "absolute";
+    scene.style.inset = "0";
+    scene.style.width = "100%";
+    scene.style.height = "100%";
+  }
 }
 
 function startArViewportSync() {

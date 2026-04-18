@@ -312,6 +312,7 @@ button.button-secondary {
 
 .camera-stage {
   min-height: 68vh;
+  padding-top: 0;
 }
 
 .ar-scene-mount {
@@ -470,20 +471,48 @@ button.button-secondary {
 #ar-scene .a-canvas,
 .ar-scene-mount > video,
 .ar-scene-mount > canvas,
-.contained-ar-layer {
+.contained-ar-layer,
+.arjs-video,
+video.arjs-video,
+video[id*="arjs"],
+div[id*="arjs"],
+div.arjs-video,
+.arjs-loader {
   position: absolute !important;
   inset: 0 !important;
   width: 100% !important;
   height: 100% !important;
   object-fit: cover !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
 }
 
 #ar-scene {
   z-index: 2;
+  overflow: hidden !important;
 }
 
 .contained-ar-layer {
   z-index: 1;
+}
+
+.arjs-video,
+video.arjs-video,
+video[id*="arjs"] {
+  z-index: 1 !important;
+}
+
+.a-enter-vr,
+.a-enter-vr-button,
+.a-enter-ar,
+.a-enter-ar-button,
+.a-orientation-modal,
+.a-fullscreen-button,
+button[title*="VR"],
+button[aria-label*="VR"] {
+  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
 }
 
 .a-canvas,
