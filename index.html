@@ -3,175 +3,188 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Prototipo WebAR Educativo</title>
+    <meta name="theme-color" content="#fff4e8" />
+    <title>PoliAR Edu | Prototipo WebAR Educativo</title>
     <meta
       name="description"
-      content="Prototipo de realidad aumentada web con registro de interesados conectado a Firebase y GitHub Pages."
+      content="Prototipo WebAR de bajo costo para visualizar contenido educativo en realidad aumentada desde el navegador."
     />
     <link rel="stylesheet" href="./styles.css" />
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.js"></script>
-    <script type="module" src="./app.firebase.js"></script>
   </head>
   <body>
-    <main class="app-shell">
-      <section class="hero-card" id="intro">
-        <p class="eyebrow">Politecnico Colombo Andino</p>
-        <h1>Prototipo educativo de realidad aumentada web</h1>
-        <p class="lead">
-          Esta prueba de concepto demuestra que es posible visualizar contenido
-          3D educativo desde el navegador, usando la camara del dispositivo y un
-          marcador visual, sin instalar aplicaciones adicionales.
-        </p>
-
-        <div class="feature-list">
-          <div class="feature-item">
-            <strong>Acceso simple</strong>
-            <span>Abre el enlace desde tu navegador movil o de escritorio.</span>
-          </div>
-          <div class="feature-item">
-            <strong>Uso de camara</strong>
-            <span>Permite el acceso a la camara cuando el navegador lo solicite.</span>
-          </div>
-          <div class="feature-item">
-            <strong>Marcador Hiro</strong>
-            <span>Apunta la camara al marcador para activar la experiencia RA.</span>
+    <main class="page-shell">
+      <section class="hero-panel">
+        <div class="hero-copy">
+          <p class="eyebrow">Politecnico Colombo Andino</p>
+          <div class="hero-actions">
+            <a class="button-primary" href="#experiencia">Probar experiencia</a>
+            <a
+              class="button-secondary"
+              href="https://raw.githubusercontent.com/AR-js-org/AR.js/master/data/images/HIRO.jpg"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Abrir marcador Hiro
+            </a>
           </div>
         </div>
-
-        <a class="primary-link" href="#experience">Ir a la experiencia WebAR</a>
-      </section>
-
-      <section class="instructions-card">
-        <h2>Como probar el prototipo</h2>
-        <ol>
-          <li>Abre esta pagina y concede permiso para usar la camara.</li>
-          <li>Desplazate hasta la experiencia WebAR.</li>
-          <li>Apunta la camara al marcador Hiro.</li>
-          <li>Observa el modelo 3D y muevete alrededor para verlo desde distintos angulos.</li>
-        </ol>
-        <p class="helper-text">
-          Este prototipo usa herramientas gratuitas y de codigo abierto, por lo que
-          resulta adecuado para contextos educativos de bajo costo.
-        </p>
-      </section>
-
-      <section class="marker-card">
-        <h2>Marcador recomendado</h2>
-        <p>
-          La escena esta configurada con el marcador clasico
-          <strong>Hiro</strong>. Puedes visualizarlo o imprimirlo desde este
-          enlace:
-        </p>
-        <p>
-          <a
-            href="https://raw.githubusercontent.com/AR-js-org/AR.js/master/data/images/HIRO.jpg"
-            target="_blank"
-            rel="noreferrer"
-          >
-            Abrir marcador Hiro
-          </a>
-        </p>
-      </section>
-
-      <section class="signup-card" id="registro">
-        <div class="section-heading">
-          <p class="eyebrow">Base de datos activa</p>
-          <h2>Registrar interesados en Firebase</h2>
-        </div>
-        <p class="helper-text">
-          Este formulario envia la informacion directamente desde GitHub Pages
-          hacia Firestore dentro de Firebase.
-        </p>
-        <p class="helper-text">
-          Version actual: GitHub Pages + Firebase directa.
-        </p>
-
-        <form class="interest-form" data-interest-form>
-          <label>
-            Nombre
-            <input type="text" name="name" placeholder="Tu nombre" required />
-          </label>
-
-          <label>
-            Correo
-            <input type="email" name="email" placeholder="correo@ejemplo.com" />
-          </label>
-
-          <label>
-            Rol
-            <select name="role" required>
-              <option value="">Selecciona una opcion</option>
-              <option value="docente">Docente</option>
-              <option value="estudiante">Estudiante</option>
-              <option value="directivo">Directivo</option>
-              <option value="otro">Otro</option>
-            </select>
-          </label>
-
-          <label>
-            Comentarios
-            <textarea
-              name="notes"
-              rows="4"
-              placeholder="Que te gustaria probar o medir con este prototipo"
-            ></textarea>
-          </label>
-
-          <button type="submit" class="primary-button">Guardar en Firebase</button>
-          <p class="form-status" data-form-status data-state="idle">
-            Completa el formulario para probar la conexion con la base de datos.
-          </p>
-        </form>
       </section>
     </main>
 
-    <section class="experience-wrapper" id="experience">
+    <section class="experience-section" id="experiencia">
       <div class="experience-header">
         <div>
-          <p class="eyebrow">Experiencia en vivo</p>
-          <h2>Figura geometrica en realidad aumentada</h2>
+          <p class="eyebrow">Experiencia WebAR</p>
+          <h2>Modelo educativo 3D sobre marcador</h2>
         </div>
-        <p class="experience-note">
-          Si no ves el modelo, verifica el permiso de camara y acerca el marcador Hiro al encuadre.
+        <p class="experience-copy">
+          El modelo representa un mini sistema planetario para demostrar como un
+          objeto educativo puede superponerse al entorno fisico en tiempo real.
         </p>
       </div>
 
-      <div class="ar-stage">
-        <div class="overlay-panel">
-          <span class="status-dot"></span>
-          <p>Estado esperado: camara activa y marcador detectado.</p>
+      <div class="experience-stage">
+        <div class="overlay-banner" id="live-banner">
+          <span class="status-light" id="status-light"></span>
+          <p id="live-message">Cargando escena WebAR...</p>
         </div>
 
-        <a-scene
-          embedded
-          vr-mode-ui="enabled: false"
-          renderer="antialias: true; alpha: true"
-          arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
-        >
-          <a-marker preset="hiro">
-            <a-entity
-              position="0 0.5 0"
-              animation="property: rotation; to: 0 360 0; loop: true; dur: 8000; easing: linear"
-            >
-              <a-entity
-                geometry="primitive: torusKnot; radius: 0.18; radiusTubular: 0.03; p: 2; q: 3"
-                material="color: #f59e0b; metalness: 0.15; roughness: 0.35"
-              ></a-entity>
-              <a-entity
-                position="0 0.42 0"
-                text="value: Figura geometrica 3D; align: center; color: #ffffff; width: 2.2"
-              ></a-entity>
-              <a-entity
-                position="0 0.22 0"
-                text="value: Recurso educativo accesible; align: center; color: #dbeafe; width: 2.3"
-              ></a-entity>
-            </a-entity>
-          </a-marker>
+        <div class="qr-panel">
+          <div class="qr-copy">
+            <p class="eyebrow">Lector QR</p>
+            <h3>Abre la camara y escanea un codigo QR</h3>
+            <p>
+              Si el QR contiene una imagen o un enlace directo a una imagen,
+              la vista previa se mostrara aqui mismo.
+            </p>
+          </div>
 
-          <a-entity camera></a-entity>
-        </a-scene>
+          <div class="qr-actions">
+            <button class="button-primary qr-button" id="start-qr-scan" type="button">
+              Abrir camara para QR
+            </button>
+            <p class="qr-status" id="qr-status">
+              Pulsa el boton para activar la camara y leer el codigo QR.
+            </p>
+          </div>
+
+          <div class="qr-scanner" id="qr-scanner">
+            <video
+              id="qr-video"
+              class="qr-video"
+              autoplay
+              playsinline
+              muted
+            ></video>
+            <div class="qr-frame" aria-hidden="true"></div>
+          </div>
+
+          <div class="qr-result" id="qr-result" hidden>
+            <p class="qr-result-label">Imagen detectada desde el QR</p>
+            <img
+              id="qr-image-preview"
+              class="qr-image-preview"
+              alt="Imagen cargada desde el codigo QR"
+            />
+            <a
+              id="qr-image-link"
+              class="button-secondary"
+              href="#"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Abrir imagen en otra pestana
+            </a>
+          </div>
+        </div>
+
+        <div class="ar-launcher">
+          <button class="button-secondary" id="start-ar-experience" type="button">
+            Activar experiencia AR
+          </button>
+          <p class="qr-status" id="ar-status">
+            El lector QR tiene prioridad. Cuando termines, puedes abrir la experiencia AR.
+          </p>
+        </div>
+
+        <div id="ar-scene-mount" class="ar-scene-mount"></div>
+        <template id="ar-scene-template">
+          <a-scene
+            id="ar-scene"
+            embedded
+            vr-mode-ui="enabled: false"
+            renderer="antialias: true; alpha: true; precision: medium;"
+            arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
+          >
+            <a-marker id="hiro-marker" preset="hiro">
+              <a-entity
+                position="0 0.1 0"
+                rotation="-90 0 0"
+                animation="property: rotation; to: -90 360 0; loop: true; dur: 14000; easing: linear"
+              >
+                <a-sphere radius="0.16" color="#f59e0b" emissive="#f59e0b"></a-sphere>
+                <a-sphere position="0.35 0 0" radius="0.04" color="#60a5fa"></a-sphere>
+                <a-ring
+                  position="0 0 0"
+                  radius-inner="0.34"
+                  radius-outer="0.345"
+                  color="#6b7280"
+                ></a-ring>
+                <a-sphere position="-0.52 0 0" radius="0.055" color="#34d399"></a-sphere>
+                <a-ring
+                  position="0 0 0"
+                  radius-inner="0.515"
+                  radius-outer="0.52"
+                  color="#94a3b8"
+                ></a-ring>
+                <a-sphere position="0 0 0.7" radius="0.07" color="#f87171"></a-sphere>
+                <a-ring
+                  position="0 0 0"
+                  radius-inner="0.695"
+                  radius-outer="0.7"
+                  color="#cbd5e1"
+                ></a-ring>
+              </a-entity>
+
+              <a-entity
+                position="0 0.65 0"
+                text="value: Sistema solar educativo; align: center; color: #f8fafc; width: 2.4"
+              ></a-entity>
+              <a-entity
+                position="0 0.48 0"
+                text="value: WebAR accesible y de bajo costo; align: center; color: #cbd5e1; width: 2.6"
+              ></a-entity>
+            </a-marker>
+
+            <a-entity camera></a-entity>
+          </a-scene>
+        </template>
+      </div>
+
+      <div class="tips-grid">
+        <article class="tip-card">
+          <h3>Como usarlo</h3>
+          <ol class="ordered-list">
+            <li>Abre la pagina desde tu celular o computador.</li>
+            <li>Permite el acceso a la camara cuando el navegador lo solicite.</li>
+            <li>Abre o imprime el marcador Hiro.</li>
+            <li>Apunta la camara al marcador para ver el modelo 3D.</li>
+          </ol>
+        </article>
+
+        <article class="tip-card">
+          <h3>Valor educativo</h3>
+          <p>
+            Este formato permite explicar conceptos abstractos con apoyo visual e
+            interactivo, facilitando la comprension en areas como ciencias,
+            geometria, anatomia e historia.
+          </p>
+        </article>
       </div>
     </section>
+
+    <script src="./app.js"></script>
   </body>
 </html>
