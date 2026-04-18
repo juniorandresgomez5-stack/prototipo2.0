@@ -4,10 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#fff4e8" />
-    <title>PoliAR Edu | Experiencia</title>
+    <title>PoliAR Edu | Experiencia 3D</title>
     <meta
       name="description"
-      content="Experiencia WebAR a pantalla completa para visualizar marcadores educativos."
+      content="Experiencia WebAR a pantalla completa para visualizar marcadores educativos con modelos 3D."
     />
     <link rel="stylesheet" href="./styles.css" />
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
@@ -22,9 +22,8 @@
             <h2>Activa la camara en pantalla completa</h2>
           </div>
           <p class="experience-copy">
-            Esta experiencia ahora abre la camara a pantalla completa para evitar
-            los problemas de recorte del video en algunos celulares. Luego apunta
-            al marcador que quieras visualizar.
+            Esta experiencia abre la camara a pantalla completa y muestra un
+            modelo 3D educativo diferente segun el marcador detectado.
           </p>
         </div>
 
@@ -66,20 +65,24 @@
           renderer="antialias: true; alpha: true; precision: medium;"
           arjs="trackingMethod: best; sourceType: webcam; videoTexture: true; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;"
         >
+          <a-assets timeout="45000">
+            <a-asset-item id="model-solar-system" src="./assets/models/solar_system_custom.glb"></a-asset-item>
+            <a-asset-item id="model-celula" src="./assets/models/celula.glb"></a-asset-item>
+            <a-asset-item id="model-computer" src="./assets/models/computer_components.glb"></a-asset-item>
+            <a-asset-item id="model-human-body" src="./assets/models/esqueleto_y_sistemas_circulatorio_digestivo.glb"></a-asset-item>
+            <a-asset-item id="model-rabbit" src="./assets/models/squelette_entier_de_lapin_o._cuniculus.glb"></a-asset-item>
+            <a-asset-item id="model-heart" src="./assets/models/virtopsia_arma_blanca_corazon.glb"></a-asset-item>
+          </a-assets>
+
           <a-marker id="hiro-marker" preset="hiro" data-marker-label="Hiro">
             <a-entity
-              position="0 0.1 0"
+              class="marker-model-entity"
+              position="0 0.2 0"
               rotation="-90 0 0"
-              animation="property: rotation; to: -90 360 0; loop: true; dur: 14000; easing: linear"
-            >
-              <a-sphere radius="0.16" color="#f59e0b" emissive="#f59e0b"></a-sphere>
-              <a-sphere position="0.35 0 0" radius="0.04" color="#60a5fa"></a-sphere>
-              <a-ring position="0 0 0" radius-inner="0.34" radius-outer="0.345" color="#6b7280"></a-ring>
-              <a-sphere position="-0.52 0 0" radius="0.055" color="#34d399"></a-sphere>
-              <a-ring position="0 0 0" radius-inner="0.515" radius-outer="0.52" color="#94a3b8"></a-ring>
-              <a-sphere position="0 0 0.7" radius="0.07" color="#f87171"></a-sphere>
-              <a-ring position="0 0 0" radius-inner="0.695" radius-outer="0.7" color="#cbd5e1"></a-ring>
-            </a-entity>
+              scale="0.12 0.12 0.12"
+              gltf-model="#model-solar-system"
+              data-model-name="Sistema solar"
+            ></a-entity>
             <a-entity
               position="0 0.65 0"
               text="value: Sistema solar educativo; align: center; color: #f8fafc; width: 2.4"
@@ -87,28 +90,63 @@
           </a-marker>
 
           <a-marker type="barcode" value="0" data-marker-label="Barcode 0">
-            <a-box position="0 0.2 0" depth="0.18" height="0.18" width="0.18" color="#60a5fa"></a-box>
-            <a-entity position="0 0.45 0" text="value: Geometria; align: center; color: #f8fafc; width: 2"></a-entity>
+            <a-entity
+              class="marker-model-entity"
+              position="0 0.22 0"
+              rotation="-90 0 0"
+              scale="0.18 0.18 0.18"
+              gltf-model="#model-celula"
+              data-model-name="Celula"
+            ></a-entity>
+            <a-entity position="0 0.5 0" text="value: Celula; align: center; color: #f8fafc; width: 2"></a-entity>
           </a-marker>
 
           <a-marker type="barcode" value="1" data-marker-label="Barcode 1">
-            <a-octahedron position="0 0.2 0" radius="0.15" color="#34d399"></a-octahedron>
-            <a-entity position="0 0.45 0" text="value: Biologia; align: center; color: #f8fafc; width: 2"></a-entity>
+            <a-entity
+              class="marker-model-entity"
+              position="0 0.2 0"
+              rotation="-90 0 0"
+              scale="0.12 0.12 0.12"
+              gltf-model="#model-computer"
+              data-model-name="Componentes del computador"
+            ></a-entity>
+            <a-entity position="0 0.48 0" text="value: Hardware; align: center; color: #f8fafc; width: 2"></a-entity>
           </a-marker>
 
           <a-marker type="barcode" value="2" data-marker-label="Barcode 2">
-            <a-cone position="0 0.2 0" radius-bottom="0.14" radius-top="0.04" height="0.32" color="#f97316"></a-cone>
-            <a-entity position="0 0.48 0" text="value: Tecnologia; align: center; color: #f8fafc; width: 2"></a-entity>
+            <a-entity
+              class="marker-model-entity"
+              position="0 0.1 0"
+              rotation="-90 0 0"
+              scale="0.1 0.1 0.1"
+              gltf-model="#model-human-body"
+              data-model-name="Esqueleto y sistemas"
+            ></a-entity>
+            <a-entity position="0 0.56 0" text="value: Anatomia humana; align: center; color: #f8fafc; width: 2.3"></a-entity>
           </a-marker>
 
           <a-marker type="barcode" value="3" data-marker-label="Barcode 3">
-            <a-cylinder position="0 0.18 0" radius="0.12" height="0.28" color="#a78bfa"></a-cylinder>
-            <a-entity position="0 0.45 0" text="value: Fisica; align: center; color: #f8fafc; width: 2"></a-entity>
+            <a-entity
+              class="marker-model-entity"
+              position="0 0.14 0"
+              rotation="-90 0 0"
+              scale="0.05 0.05 0.05"
+              gltf-model="#model-rabbit"
+              data-model-name="Esqueleto de conejo"
+            ></a-entity>
+            <a-entity position="0 0.52 0" text="value: Conejo anatomico; align: center; color: #f8fafc; width: 2.3"></a-entity>
           </a-marker>
 
           <a-marker type="barcode" value="4" data-marker-label="Barcode 4">
-            <a-torus-knot position="0 0.2 0" radius="0.1" radius-tubular="0.02" color="#f43f5e"></a-torus-knot>
-            <a-entity position="0 0.48 0" text="value: Anatomia; align: center; color: #f8fafc; width: 2"></a-entity>
+            <a-entity
+              class="marker-model-entity"
+              position="0 0.14 0"
+              rotation="-90 0 0"
+              scale="0.13 0.13 0.13"
+              gltf-model="#model-heart"
+              data-model-name="Corazon anatomico"
+            ></a-entity>
+            <a-entity position="0 0.5 0" text="value: Corazon; align: center; color: #f8fafc; width: 2"></a-entity>
           </a-marker>
 
           <a-entity camera></a-entity>

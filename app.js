@@ -1,12 +1,5 @@
 const liveMessage = document.getElementById("live-message");
 const statusLight = document.getElementById("status-light");
-const startQrScanButton = document.getElementById("start-qr-scan");
-const qrStatus = document.getElementById("qr-status");
-const qrScanner = document.getElementById("qr-scanner");
-const qrVideo = document.getElementById("qr-video");
-const qrResult = document.getElementById("qr-result");
-const qrImagePreview = document.getElementById("qr-image-preview");
-const qrImageLink = document.getElementById("qr-image-link");
 const startArExperienceButton = document.getElementById("start-ar-experience");
 const arStatus = document.getElementById("ar-status");
 const arSceneMount = document.getElementById("ar-scene-mount");
@@ -15,16 +8,11 @@ const fullscreenArShell = document.getElementById("fullscreen-ar-shell");
 const closeArExperienceButton = document.getElementById("close-ar-experience");
 
 let markerDetected = false;
-let qrStream = null;
-let qrDetector = null;
-let qrAnimationFrame = null;
-let qrScanActive = false;
-let qrCanvas = null;
-let qrCanvasContext = null;
 let scene = null;
 let arStarted = false;
 let trackedMarkers = [];
 let activeMarkers = new Set();
+let trackedModels = [];
 
 function setBannerState(type, message) {
   if (!statusLight || !liveMessage) {
@@ -70,11 +58,6 @@ function evaluateSupport() {
     );
   }
 
-  if (qrStatus && startQrScanButton && !("BarcodeDetector" in window)) {
-    qrStatus.textContent =
-      "Este navegador no incluye lector QR nativo. Prueba con Chrome o Edge reciente en el celular.";
-    startQrScanButton.disabled = true;
-  }
 }
 
 function bindArEvents() {
@@ -96,13 +79,15 @@ function bindArEvents() {
 
   trackedMarkers.forEach((trackedMarker) => {
     const markerLabel = trackedMarker.dataset.markerLabel || "Marcador";
+    const modelName =
+      trackedMarker.querySelector("[data-model-name]")?.dataset.modelName || markerLabel;
 
     trackedMarker.addEventListener("markerFound", () => {
       activeMarkers.add(markerLabel);
       markerDetected = activeMarkers.size > 0;
       setBannerState(
         "success",
-        `Marcador detectado: ${markerLabel}. El contenido esta proyectado en tiempo real.`
+        `Marcador detectado: ${markerLabel}. Modelo cargado: ${modelName}.`
       );
     });
 
@@ -141,17 +126,10 @@ function mountArScene() {
     return;
   }
 
-  if (qrScanActive) {
-    stopQrScanner();
-    if (qrStatus) {
-      qrStatus.textContent =
-        "Escaneo QR detenido para liberar la camara antes de abrir la experiencia AR.";
-    }
-  }
-
   arSceneMount.appendChild(arSceneTemplate.content.cloneNode(true));
   scene = document.getElementById("ar-scene");
   trackedMarkers = Array.from(document.querySelectorAll("[data-marker-label]"));
+  trackedModels = Array.from(document.querySelectorAll(".marker-model-entity"));
   activeMarkers = new Set();
   arStarted = true;
 
@@ -164,6 +142,21 @@ function mountArScene() {
     startArExperienceButton.disabled = true;
     startArExperienceButton.textContent = "Experiencia AR activa";
   }
+
+  trackedModels.forEach((modelEntity) => {
+    const modelName = modelEntity.dataset.modelName || "Modelo 3D";
+
+    modelEntity.addEventListener("model-loaded", () => {
+      setBannerState("info", `${modelName} listo. Ya puedes apuntar al marcador correspondiente.`);
+    });
+
+    modelEntity.addEventListener("model-error", () => {
+      setBannerState(
+        "error",
+        `No se pudo cargar ${modelName}. Recarga la pagina si el problema continua.`
+      );
+    });
+  });
 
   bindArEvents();
 }
@@ -185,173 +178,8 @@ function closeArExperience() {
   document.body.classList.remove("has-fullscreen-ar");
 }
 
-function getImageUrlFromQrText(rawValue) {
-  if (!rawValue) {
-    return null;
-  }
-
-  const normalizedValue = rawValue.trim();
-
-  if (/^data:image\//i.test(normalizedValue)) {
-    return normalizedValue;
-  }
-
-  try {
-    const parsedUrl = new URL(normalizedValue);
-    if (/\.(png|jpe?g|gif|webp|bmp|svg)(\?.*)?$/i.test(parsedUrl.pathname)) {
-      return parsedUrl.toString();
-    }
-  } catch (error) {
-    // Sigue con otros formatos de QR.
-  }
-
-  try {
-    const parsedJson = JSON.parse(normalizedValue);
-    const candidate =
-      parsedJson.imageUrl ||
-      parsedJson.image ||
-      parsedJson.url ||
-      parsedJson.src ||
-      null;
-
-    if (typeof candidate === "string" && candidate.trim()) {
-      return candidate.trim();
-    }
-  } catch (error) {
-    // El QR no contiene JSON y no pasa nada.
-  }
-
-  return null;
-}
-
-function showQrImage(imageUrl) {
-  if (!qrImagePreview || !qrImageLink || !qrResult || !qrStatus) {
-    return;
-  }
-
-  qrImagePreview.src = imageUrl;
-  qrImageLink.href = imageUrl;
-  qrResult.hidden = false;
-  qrStatus.textContent = "QR detectado. La imagen ya esta lista para visualizarse.";
-}
-
-function stopQrScanner() {
-  qrScanActive = false;
-
-  if (qrAnimationFrame) {
-    window.cancelAnimationFrame(qrAnimationFrame);
-    qrAnimationFrame = null;
-  }
-
-  if (qrStream) {
-    qrStream.getTracks().forEach((track) => track.stop());
-    qrStream = null;
-  }
-
-  if (qrVideo) {
-    qrVideo.pause();
-    qrVideo.srcObject = null;
-  }
-
-  if (qrScanner) {
-    qrScanner.classList.remove("is-active");
-  }
-
-  if (startQrScanButton) {
-    startQrScanButton.textContent = "Abrir camara para QR";
-  }
-}
-
-async function scanQrFrame() {
-  if (!qrScanActive || !qrDetector || !qrVideo.videoWidth || !qrVideo.videoHeight) {
-    qrAnimationFrame = window.requestAnimationFrame(scanQrFrame);
-    return;
-  }
-
-  if (!qrCanvas) {
-    qrCanvas = document.createElement("canvas");
-    qrCanvasContext = qrCanvas.getContext("2d", { willReadFrequently: true });
-  }
-
-  qrCanvas.width = qrVideo.videoWidth;
-  qrCanvas.height = qrVideo.videoHeight;
-  qrCanvasContext.drawImage(qrVideo, 0, 0, qrCanvas.width, qrCanvas.height);
-
-  try {
-    const barcodes = await qrDetector.detect(qrCanvas);
-
-    if (barcodes.length > 0) {
-      const rawValue = barcodes[0].rawValue || "";
-      const imageUrl = getImageUrlFromQrText(rawValue);
-
-      if (imageUrl) {
-        showQrImage(imageUrl);
-      } else {
-        qrStatus.textContent =
-          "Se leyo el QR, pero no contiene una imagen valida. Usa un enlace directo o un JSON con imageUrl.";
-      }
-
-      stopQrScanner();
-      return;
-    }
-  } catch (error) {
-    qrStatus.textContent = "No fue posible procesar el QR en este momento.";
-    stopQrScanner();
-    return;
-  }
-
-  qrAnimationFrame = window.requestAnimationFrame(scanQrFrame);
-}
-
-async function startQrScanner() {
-  if (
-    !startQrScanButton ||
-    !qrStatus ||
-    !qrVideo ||
-    !qrScanner ||
-    !qrResult ||
-    !qrImagePreview
-  ) {
-    return;
-  }
-
-  if (qrScanActive) {
-    stopQrScanner();
-    qrStatus.textContent = "Escaneo detenido. Pulsa el boton si quieres volver a abrir la camara.";
-    return;
-  }
-
-  qrResult.hidden = true;
-  qrImagePreview.removeAttribute("src");
-
-  try {
-    qrStream = await navigator.mediaDevices.getUserMedia({
-      video: { facingMode: { ideal: "environment" } },
-      audio: false,
-    });
-
-    qrDetector = new window.BarcodeDetector({ formats: ["qr_code"] });
-    qrVideo.srcObject = qrStream;
-    await qrVideo.play();
-
-    qrScanActive = true;
-    qrScanner.classList.add("is-active");
-    startQrScanButton.textContent = "Detener escaneo QR";
-    qrStatus.textContent = "Camara activa. Centra el codigo QR dentro del recuadro.";
-    qrAnimationFrame = window.requestAnimationFrame(scanQrFrame);
-  } catch (error) {
-    qrStatus.textContent =
-      "No se pudo abrir la camara para leer el QR. Revisa los permisos del navegador.";
-    stopQrScanner();
-  }
-}
-
 evaluateSupport();
 bindArEvents();
-
-if (startQrScanButton) {
-  startQrScanButton.addEventListener("click", startQrScanner);
-}
 
 if (startArExperienceButton) {
   startArExperienceButton.addEventListener("click", openArExperience);
@@ -360,5 +188,3 @@ if (startArExperienceButton) {
 if (closeArExperienceButton) {
   closeArExperienceButton.addEventListener("click", closeArExperience);
 }
-
-window.addEventListener("beforeunload", stopQrScanner);
