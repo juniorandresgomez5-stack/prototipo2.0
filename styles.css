@@ -288,6 +288,17 @@ button.button-secondary {
   margin-top: auto;
 }
 
+.camera-controls {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.camera-controls .button-primary {
+  width: fit-content;
+  min-width: 260px;
+}
+
 .experience-stage {
   position: relative;
   overflow: hidden;
@@ -299,9 +310,15 @@ button.button-secondary {
     var(--panel-strong);
 }
 
+.camera-stage {
+  min-height: 68vh;
+}
+
 .ar-scene-mount {
   width: 100%;
   min-height: 72vh;
+  position: relative;
+  overflow: hidden;
 }
 
 .overlay-banner {
@@ -403,34 +420,6 @@ button.button-secondary {
   gap: 12px;
 }
 
-.ar-launcher {
-  position: absolute;
-  right: 16px;
-  bottom: 16px;
-  z-index: 3;
-  display: grid;
-  justify-items: end;
-  gap: 8px;
-  max-width: 320px;
-}
-
-.ar-launcher-single {
-  left: 16px;
-  right: 16px;
-  top: 84px;
-  bottom: auto;
-  max-width: none;
-  justify-items: stretch;
-}
-
-.ar-launcher .qr-status {
-  margin: 0;
-  padding: 10px 12px;
-  border-radius: 14px;
-  border: 1px solid rgba(231, 154, 86, 0.18);
-  background: rgba(255, 248, 240, 0.9);
-}
-
 .qr-image-preview {
   display: block;
   width: min(100%, 320px);
@@ -470,6 +459,19 @@ button.button-secondary {
 .experience-stage a-scene {
   width: 100% !important;
   height: 72vh !important;
+}
+
+#ar-scene,
+#ar-scene video,
+#ar-scene canvas,
+#ar-scene .a-canvas,
+.ar-scene-mount > video,
+.ar-scene-mount > canvas {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
 }
 
 .tips-grid {
@@ -523,10 +525,6 @@ button.button-secondary {
 
   .qr-panel {
     right: 16px;
-  }
-
-  .ar-launcher {
-    max-width: 260px;
   }
 }
 
@@ -583,6 +581,11 @@ button.button-secondary {
   .button-primary,
   .button-secondary,
   .qr-button {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .camera-controls .button-primary {
     width: 100%;
     min-width: 0;
   }
@@ -644,7 +647,6 @@ button.button-secondary {
     overflow: hidden;
   }
 
-  .ar-launcher .qr-status,
   .qr-status {
     text-align: left;
   }
@@ -689,14 +691,34 @@ button.button-secondary {
   }
 
   .marker-card {
+    grid-template-columns: 108px minmax(0, 1fr);
+    gap: 10px 12px;
     padding: 14px;
     border-radius: 16px;
   }
 
   .marker-image {
+    grid-column: 1;
+    grid-row: 1;
     aspect-ratio: 1.1 / 1;
     padding: 8px;
     border-radius: 14px;
+  }
+
+  .marker-lesson {
+    grid-column: 2;
+    grid-row: 1;
+    align-content: start;
+  }
+
+  .marker-card h3,
+  .marker-description,
+  .marker-card .button-secondary {
+    grid-column: 1 / -1;
+  }
+
+  .marker-card .button-secondary {
+    min-height: 48px;
   }
 
   .lesson-image {
@@ -712,7 +734,7 @@ button.button-secondary {
 
   .overlay-banner,
   .qr-panel,
-  .ar-launcher .qr-status {
+  .camera-controls .qr-status {
     padding: 12px;
     border-radius: 14px;
   }
@@ -726,8 +748,8 @@ button.button-secondary {
   .experience-stage canvas,
   .experience-stage video,
   .experience-stage a-scene {
-    height: 46vh !important;
-    min-height: 240px;
+    height: 42vh !important;
+    min-height: 220px;
   }
 
   .qr-frame {
@@ -736,7 +758,7 @@ button.button-secondary {
     border-radius: 20px;
   }
 
-  .ar-launcher .qr-status {
+  .camera-controls .qr-status {
     padding: 10px;
   }
 

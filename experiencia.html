@@ -28,19 +28,19 @@
           </p>
         </div>
 
-        <div class="experience-stage">
+        <div class="camera-controls">
+          <button class="button-primary" id="start-ar-experience" type="button">
+            Activar camara y experiencia AR
+          </button>
+          <p class="qr-status" id="ar-status">
+            La experiencia reconoce Hiro y los marcadores Barcode 0, 1, 2, 3 y 4.
+          </p>
+        </div>
+
+        <div class="experience-stage camera-stage">
           <div class="overlay-banner" id="live-banner">
             <span class="status-light" id="status-light"></span>
             <p id="live-message">Cargando escena WebAR...</p>
-          </div>
-
-          <div class="ar-launcher ar-launcher-single">
-            <button class="button-primary" id="start-ar-experience" type="button">
-              Activar camara y experiencia AR
-            </button>
-            <p class="qr-status" id="ar-status">
-              La experiencia reconoce Hiro y los marcadores Barcode 0, 1, 2, 3 y 4.
-            </p>
           </div>
 
           <div id="ar-scene-mount" class="ar-scene-mount"></div>
@@ -50,7 +50,7 @@
               embedded
               vr-mode-ui="enabled: false"
               renderer="antialias: true; alpha: true; precision: medium;"
-              arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 4x4_BCH_13_9_3;"
+              arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;"
             >
               <a-marker id="hiro-marker" preset="hiro" data-marker-label="Hiro">
                 <a-entity
