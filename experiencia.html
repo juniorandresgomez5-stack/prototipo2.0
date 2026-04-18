@@ -61,26 +61,37 @@
       <template id="ar-scene-template">
         <a-scene
           id="ar-scene"
+          embedded
           vr-mode-ui="enabled: false"
-          renderer="antialias: true; alpha: true; precision: medium;"
+          loading-screen="enabled: false"
+          renderer="antialias: true; alpha: true; precision: medium; colorManagement: true;"
           arjs="trackingMethod: best; sourceType: webcam; videoTexture: true; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;"
         >
-          <a-assets timeout="45000">
-            <a-asset-item id="model-solar-system" src="./assets/models/solar_system_custom.glb"></a-asset-item>
-            <a-asset-item id="model-celula" src="./assets/models/celula.glb"></a-asset-item>
-            <a-asset-item id="model-computer" src="./assets/models/computer_components.glb"></a-asset-item>
-            <a-asset-item id="model-human-body" src="./assets/models/esqueleto_y_sistemas_circulatorio_digestivo.glb"></a-asset-item>
-            <a-asset-item id="model-rabbit" src="./assets/models/squelette_entier_de_lapin_o._cuniculus.glb"></a-asset-item>
-            <a-asset-item id="model-heart" src="./assets/models/virtopsia_arma_blanca_corazon.glb"></a-asset-item>
-          </a-assets>
+          <a-entity light="type: ambient; intensity: 1.35; color: #ffffff"></a-entity>
+          <a-entity
+            light="type: directional; intensity: 0.9; color: #fff7ed"
+            position="1 2 1"
+          ></a-entity>
+          <a-entity
+            light="type: directional; intensity: 0.55; color: #dbeafe"
+            position="-1 1.5 0.5"
+          ></a-entity>
 
           <a-marker id="hiro-marker" preset="hiro" data-marker-label="Hiro">
+            <a-plane
+              position="0 0 0"
+              rotation="-90 0 0"
+              width="1.15"
+              height="1.15"
+              color="#fff7ed"
+              material="opacity: 0.18"
+            ></a-plane>
             <a-entity
               class="marker-model-entity"
               position="0 0.2 0"
               rotation="-90 0 0"
               scale="0.12 0.12 0.12"
-              gltf-model="#model-solar-system"
+              data-model-src="./assets/models/solar_system_custom.glb"
               data-model-name="Sistema solar"
             ></a-entity>
             <a-entity
@@ -90,60 +101,100 @@
           </a-marker>
 
           <a-marker type="barcode" value="0" data-marker-label="Barcode 0">
+            <a-plane
+              position="0 0 0"
+              rotation="-90 0 0"
+              width="1.15"
+              height="1.15"
+              color="#eff6ff"
+              material="opacity: 0.18"
+            ></a-plane>
             <a-entity
               class="marker-model-entity"
               position="0 0.22 0"
               rotation="-90 0 0"
               scale="0.18 0.18 0.18"
-              gltf-model="#model-celula"
+              data-model-src="./assets/models/celula.glb"
               data-model-name="Celula"
             ></a-entity>
             <a-entity position="0 0.5 0" text="value: Celula; align: center; color: #f8fafc; width: 2"></a-entity>
           </a-marker>
 
           <a-marker type="barcode" value="1" data-marker-label="Barcode 1">
+            <a-plane
+              position="0 0 0"
+              rotation="-90 0 0"
+              width="1.15"
+              height="1.15"
+              color="#ecfdf5"
+              material="opacity: 0.18"
+            ></a-plane>
             <a-entity
               class="marker-model-entity"
               position="0 0.2 0"
               rotation="-90 0 0"
               scale="0.12 0.12 0.12"
-              gltf-model="#model-computer"
+              data-model-src="./assets/models/computer_components.glb"
               data-model-name="Componentes del computador"
             ></a-entity>
             <a-entity position="0 0.48 0" text="value: Hardware; align: center; color: #f8fafc; width: 2"></a-entity>
           </a-marker>
 
           <a-marker type="barcode" value="2" data-marker-label="Barcode 2">
+            <a-plane
+              position="0 0 0"
+              rotation="-90 0 0"
+              width="1.15"
+              height="1.15"
+              color="#fff7ed"
+              material="opacity: 0.18"
+            ></a-plane>
             <a-entity
               class="marker-model-entity"
               position="0 0.1 0"
               rotation="-90 0 0"
               scale="0.1 0.1 0.1"
-              gltf-model="#model-human-body"
+              data-model-src="./assets/models/esqueleto_y_sistemas_circulatorio_digestivo.glb"
               data-model-name="Esqueleto y sistemas"
             ></a-entity>
             <a-entity position="0 0.56 0" text="value: Anatomia humana; align: center; color: #f8fafc; width: 2.3"></a-entity>
           </a-marker>
 
           <a-marker type="barcode" value="3" data-marker-label="Barcode 3">
+            <a-plane
+              position="0 0 0"
+              rotation="-90 0 0"
+              width="1.15"
+              height="1.15"
+              color="#faf5ff"
+              material="opacity: 0.18"
+            ></a-plane>
             <a-entity
               class="marker-model-entity"
               position="0 0.14 0"
               rotation="-90 0 0"
               scale="0.05 0.05 0.05"
-              gltf-model="#model-rabbit"
+              data-model-src="./assets/models/squelette_entier_de_lapin_o._cuniculus.glb"
               data-model-name="Esqueleto de conejo"
             ></a-entity>
             <a-entity position="0 0.52 0" text="value: Conejo anatomico; align: center; color: #f8fafc; width: 2.3"></a-entity>
           </a-marker>
 
           <a-marker type="barcode" value="4" data-marker-label="Barcode 4">
+            <a-plane
+              position="0 0 0"
+              rotation="-90 0 0"
+              width="1.15"
+              height="1.15"
+              color="#fff1f2"
+              material="opacity: 0.18"
+            ></a-plane>
             <a-entity
               class="marker-model-entity"
               position="0 0.14 0"
               rotation="-90 0 0"
               scale="0.13 0.13 0.13"
-              gltf-model="#model-heart"
+              data-model-src="./assets/models/virtopsia_arma_blanca_corazon.glb"
               data-model-name="Corazon anatomico"
             ></a-entity>
             <a-entity position="0 0.5 0" text="value: Corazon; align: center; color: #f8fafc; width: 2"></a-entity>

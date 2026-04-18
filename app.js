@@ -13,6 +13,8 @@ let arStarted = false;
 let trackedMarkers = [];
 let activeMarkers = new Set();
 let trackedModels = [];
+let boundMarkerEvents = false;
+let sceneFeedbackReady = false;
 
 function setBannerState(type, message) {
   if (!statusLight || !liveMessage) {
@@ -61,33 +63,25 @@ function evaluateSupport() {
 }
 
 function bindArEvents() {
-  if (!scene || trackedMarkers.length === 0) {
+  if (!scene || trackedMarkers.length === 0 || boundMarkerEvents) {
     return;
   }
 
-  scene.addEventListener("loaded", () => {
-    setBannerState("info", "Escena cargada. Permite la camara y apunta a uno de los marcadores.");
-  });
-
-  scene.addEventListener("camera-init", () => {
-    setBannerState("info", "Camara activa. Busca Hiro o cualquiera de los marcadores del menu.");
-  });
-
-  scene.addEventListener("camera-error", () => {
-    setBannerState("error", "La camara fue bloqueada o no esta disponible en este dispositivo.");
-  });
+  boundMarkerEvents = true;
 
   trackedMarkers.forEach((trackedMarker) => {
     const markerLabel = trackedMarker.dataset.markerLabel || "Marcador";
-    const modelName =
-      trackedMarker.querySelector("[data-model-name]")?.dataset.modelName || markerLabel;
+    const modelEntity = trackedMarker.querySelector(".marker-model-entity");
+    const modelName = modelEntity?.dataset.modelName || markerLabel;
 
     trackedMarker.addEventListener("markerFound", () => {
       activeMarkers.add(markerLabel);
       markerDetected = activeMarkers.size > 0;
+
+      ensureModelLoaded(modelEntity);
       setBannerState(
         "success",
-        `Marcador detectado: ${markerLabel}. Modelo cargado: ${modelName}.`
+        `Marcador detectado: ${markerLabel}. Cargando ${modelName} en la escena.`
       );
     });
 
@@ -121,6 +115,45 @@ function bindArEvents() {
   }, 5000);
 }
 
+function bindSceneFeedback() {
+  if (!scene || sceneFeedbackReady) {
+    return;
+  }
+
+  sceneFeedbackReady = true;
+
+  scene.addEventListener("loaded", () => {
+    setBannerState("info", "Escena cargada. Permite la camara y apunta a uno de los marcadores.");
+  });
+
+  scene.addEventListener("camera-init", () => {
+    setBannerState("info", "Camara activa. Busca Hiro o cualquiera de los marcadores del menu.");
+  });
+
+  scene.addEventListener("camera-error", () => {
+    setBannerState("error", "La camara fue bloqueada o no esta disponible en este dispositivo.");
+  });
+}
+
+function ensureModelLoaded(modelEntity) {
+  if (!modelEntity) {
+    return;
+  }
+
+  const modelSrc = modelEntity.dataset.modelSrc;
+
+  if (!modelSrc || modelEntity.dataset.modelLoaded === "true") {
+    return;
+  }
+
+  if (modelEntity.dataset.modelLoading === "true") {
+    return;
+  }
+
+  modelEntity.dataset.modelLoading = "true";
+  modelEntity.setAttribute("gltf-model", modelSrc);
+}
+
 function mountArScene() {
   if (arStarted || !arSceneMount || !arSceneTemplate) {
     return;
@@ -147,10 +180,13 @@ function mountArScene() {
     const modelName = modelEntity.dataset.modelName || "Modelo 3D";
 
     modelEntity.addEventListener("model-loaded", () => {
+      modelEntity.dataset.modelLoaded = "true";
+      modelEntity.dataset.modelLoading = "false";
       setBannerState("info", `${modelName} listo. Ya puedes apuntar al marcador correspondiente.`);
     });
 
     modelEntity.addEventListener("model-error", () => {
+      modelEntity.dataset.modelLoading = "false";
       setBannerState(
         "error",
         `No se pudo cargar ${modelName}. Recarga la pagina si el problema continua.`
@@ -158,6 +194,7 @@ function mountArScene() {
     });
   });
 
+  bindSceneFeedback();
   bindArEvents();
 }
 
@@ -179,7 +216,6 @@ function closeArExperience() {
 }
 
 evaluateSupport();
-bindArEvents();
 
 if (startArExperienceButton) {
   startArExperienceButton.addEventListener("click", openArExperience);
