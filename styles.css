@@ -314,6 +314,7 @@ button.button-secondary {
   position: absolute;
   inset: 0;
   background: #000;
+  display: none;
 }
 
 .fullscreen-ar-stage {
@@ -532,12 +533,6 @@ button.button-secondary {
 #ar-scene .a-canvas,
 .ar-scene-mount > video,
 .ar-scene-mount > canvas,
-.contained-ar-layer,
-.arjs-video,
-video.arjs-video,
-video[id*="arjs"],
-div[id*="arjs"],
-div.arjs-video,
 .arjs-loader {
   position: absolute !important;
   inset: 0 !important;
@@ -551,16 +546,6 @@ div.arjs-video,
 #ar-scene {
   z-index: 2;
   overflow: hidden !important;
-}
-
-.contained-ar-layer {
-  z-index: 1;
-}
-
-.arjs-video,
-video.arjs-video,
-video[id*="arjs"] {
-  z-index: 1 !important;
 }
 
 .a-enter-vr,
@@ -579,6 +564,10 @@ button[aria-label*="VR"] {
 .a-canvas,
 canvas.a-canvas {
   z-index: 2 !important;
+}
+
+.arjs-loader {
+  display: none !important;
 }
 
 .tips-grid {
