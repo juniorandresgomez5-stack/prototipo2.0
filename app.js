@@ -11,6 +11,8 @@ const startArExperienceButton = document.getElementById("start-ar-experience");
 const arStatus = document.getElementById("ar-status");
 const arSceneMount = document.getElementById("ar-scene-mount");
 const arSceneTemplate = document.getElementById("ar-scene-template");
+const fullscreenArShell = document.getElementById("fullscreen-ar-shell");
+const closeArExperienceButton = document.getElementById("close-ar-experience");
 
 let markerDetected = false;
 let qrStream = null;
@@ -83,12 +85,12 @@ function bindArEvents() {
 
   scene.addEventListener("loaded", () => {
     syncArViewport();
-    setBannerState("info", "Escena cargada. Permite la camara y apunta al marcador Hiro.");
+    setBannerState("info", "Escena cargada. Permite la camara y apunta a uno de los marcadores.");
   });
 
   scene.addEventListener("camera-init", () => {
     syncArViewport();
-    setBannerState("info", "Camara activa. Busca el marcador Hiro para iniciar la proyeccion.");
+    setBannerState("info", "Camara activa. Busca Hiro o cualquiera de los marcadores del menu.");
   });
 
   scene.addEventListener("camera-error", () => {
@@ -213,6 +215,23 @@ function mountArScene() {
   }
 
   bindArEvents();
+}
+
+function openArExperience() {
+  if (fullscreenArShell) {
+    fullscreenArShell.hidden = false;
+    document.body.classList.add("has-fullscreen-ar");
+  }
+
+  mountArScene();
+}
+
+function closeArExperience() {
+  if (fullscreenArShell) {
+    fullscreenArShell.hidden = true;
+  }
+
+  document.body.classList.remove("has-fullscreen-ar");
 }
 
 function getImageUrlFromQrText(rawValue) {
@@ -384,7 +403,11 @@ if (startQrScanButton) {
 }
 
 if (startArExperienceButton) {
-  startArExperienceButton.addEventListener("click", mountArScene);
+  startArExperienceButton.addEventListener("click", openArExperience);
+}
+
+if (closeArExperienceButton) {
+  closeArExperienceButton.addEventListener("click", closeArExperience);
 }
 
 window.addEventListener("beforeunload", stopQrScanner);

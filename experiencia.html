@@ -7,102 +7,114 @@
     <title>PoliAR Edu | Experiencia</title>
     <meta
       name="description"
-      content="Experiencia WebAR con camara para visualizar varios marcadores educativos."
+      content="Experiencia WebAR a pantalla completa para visualizar marcadores educativos."
     />
     <link rel="stylesheet" href="./styles.css" />
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.js"></script>
   </head>
-  <body>
+  <body class="experience-page">
     <main class="page-shell">
-      <section class="experience-section" id="experiencia">
+      <section class="experience-section experience-intro" id="experiencia">
         <div class="experience-header">
           <div>
             <p class="eyebrow">Camara WebAR</p>
-            <h2>Habilita la camara y visualiza cualquier marcador</h2>
+            <h2>Activa la camara en pantalla completa</h2>
           </div>
           <p class="experience-copy">
-            Vuelve al menu principal si necesitas abrir otro marcador. En esta
-            pantalla solo habilitas la camara y apuntas al marcador que quieras
-            visualizar.
+            Esta experiencia ahora abre la camara a pantalla completa para evitar
+            los problemas de recorte del video en algunos celulares. Luego apunta
+            al marcador que quieras visualizar.
           </p>
         </div>
 
         <div class="camera-controls">
           <button class="button-primary" id="start-ar-experience" type="button">
-            Activar camara y experiencia AR
+            Activar camara en pantalla completa
           </button>
           <p class="qr-status" id="ar-status">
             La experiencia reconoce Hiro y los marcadores Barcode 0, 1, 2, 3 y 4.
           </p>
         </div>
-
-        <div class="experience-stage camera-stage">
-          <div class="overlay-banner" id="live-banner">
-            <span class="status-light" id="status-light"></span>
-            <p id="live-message">Cargando escena WebAR...</p>
-          </div>
-
-          <div id="ar-scene-mount" class="ar-scene-mount"></div>
-          <template id="ar-scene-template">
-            <a-scene
-              id="ar-scene"
-              embedded
-              vr-mode-ui="enabled: false"
-              renderer="antialias: true; alpha: true; precision: medium;"
-              arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;"
-            >
-              <a-marker id="hiro-marker" preset="hiro" data-marker-label="Hiro">
-                <a-entity
-                  position="0 0.1 0"
-                  rotation="-90 0 0"
-                  animation="property: rotation; to: -90 360 0; loop: true; dur: 14000; easing: linear"
-                >
-                  <a-sphere radius="0.16" color="#f59e0b" emissive="#f59e0b"></a-sphere>
-                  <a-sphere position="0.35 0 0" radius="0.04" color="#60a5fa"></a-sphere>
-                  <a-ring position="0 0 0" radius-inner="0.34" radius-outer="0.345" color="#6b7280"></a-ring>
-                  <a-sphere position="-0.52 0 0" radius="0.055" color="#34d399"></a-sphere>
-                  <a-ring position="0 0 0" radius-inner="0.515" radius-outer="0.52" color="#94a3b8"></a-ring>
-                  <a-sphere position="0 0 0.7" radius="0.07" color="#f87171"></a-sphere>
-                  <a-ring position="0 0 0" radius-inner="0.695" radius-outer="0.7" color="#cbd5e1"></a-ring>
-                </a-entity>
-                <a-entity
-                  position="0 0.65 0"
-                  text="value: Sistema solar educativo; align: center; color: #f8fafc; width: 2.4"
-                ></a-entity>
-              </a-marker>
-
-              <a-marker type="barcode" value="0" data-marker-label="Barcode 0">
-                <a-box position="0 0.2 0" depth="0.18" height="0.18" width="0.18" color="#60a5fa"></a-box>
-                <a-entity position="0 0.45 0" text="value: Geometria; align: center; color: #f8fafc; width: 2"></a-entity>
-              </a-marker>
-
-              <a-marker type="barcode" value="1" data-marker-label="Barcode 1">
-                <a-octahedron position="0 0.2 0" radius="0.15" color="#34d399"></a-octahedron>
-                <a-entity position="0 0.45 0" text="value: Biologia; align: center; color: #f8fafc; width: 2"></a-entity>
-              </a-marker>
-
-              <a-marker type="barcode" value="2" data-marker-label="Barcode 2">
-                <a-cone position="0 0.2 0" radius-bottom="0.14" radius-top="0.04" height="0.32" color="#f97316"></a-cone>
-                <a-entity position="0 0.48 0" text="value: Tecnologia; align: center; color: #f8fafc; width: 2"></a-entity>
-              </a-marker>
-
-              <a-marker type="barcode" value="3" data-marker-label="Barcode 3">
-                <a-cylinder position="0 0.18 0" radius="0.12" height="0.28" color="#a78bfa"></a-cylinder>
-                <a-entity position="0 0.45 0" text="value: Fisica; align: center; color: #f8fafc; width: 2"></a-entity>
-              </a-marker>
-
-              <a-marker type="barcode" value="4" data-marker-label="Barcode 4">
-                <a-torus-knot position="0 0.2 0" radius="0.1" radius-tubular="0.02" color="#f43f5e"></a-torus-knot>
-                <a-entity position="0 0.48 0" text="value: Anatomia; align: center; color: #f8fafc; width: 2"></a-entity>
-              </a-marker>
-
-              <a-entity camera></a-entity>
-            </a-scene>
-          </template>
-        </div>
       </section>
     </main>
+
+    <section class="fullscreen-ar-shell" id="fullscreen-ar-shell" hidden>
+      <div class="fullscreen-ar-backdrop" id="fullscreen-ar-backdrop"></div>
+      <div class="fullscreen-ar-ui">
+        <div class="overlay-banner fullscreen-banner" id="live-banner">
+          <span class="status-light" id="status-light"></span>
+          <p id="live-message">Cargando escena WebAR...</p>
+        </div>
+
+        <div class="fullscreen-actions">
+          <button class="button-secondary" id="close-ar-experience" type="button">
+            Cerrar camara
+          </button>
+          <p class="qr-status">
+            Apunta a Hiro o a cualquiera de los marcadores del menu principal.
+          </p>
+        </div>
+      </div>
+
+      <div id="ar-scene-mount" class="fullscreen-ar-stage"></div>
+
+      <template id="ar-scene-template">
+        <a-scene
+          id="ar-scene"
+          vr-mode-ui="enabled: false"
+          renderer="antialias: true; alpha: true; precision: medium;"
+          arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;"
+        >
+          <a-marker id="hiro-marker" preset="hiro" data-marker-label="Hiro">
+            <a-entity
+              position="0 0.1 0"
+              rotation="-90 0 0"
+              animation="property: rotation; to: -90 360 0; loop: true; dur: 14000; easing: linear"
+            >
+              <a-sphere radius="0.16" color="#f59e0b" emissive="#f59e0b"></a-sphere>
+              <a-sphere position="0.35 0 0" radius="0.04" color="#60a5fa"></a-sphere>
+              <a-ring position="0 0 0" radius-inner="0.34" radius-outer="0.345" color="#6b7280"></a-ring>
+              <a-sphere position="-0.52 0 0" radius="0.055" color="#34d399"></a-sphere>
+              <a-ring position="0 0 0" radius-inner="0.515" radius-outer="0.52" color="#94a3b8"></a-ring>
+              <a-sphere position="0 0 0.7" radius="0.07" color="#f87171"></a-sphere>
+              <a-ring position="0 0 0" radius-inner="0.695" radius-outer="0.7" color="#cbd5e1"></a-ring>
+            </a-entity>
+            <a-entity
+              position="0 0.65 0"
+              text="value: Sistema solar educativo; align: center; color: #f8fafc; width: 2.4"
+            ></a-entity>
+          </a-marker>
+
+          <a-marker type="barcode" value="0" data-marker-label="Barcode 0">
+            <a-box position="0 0.2 0" depth="0.18" height="0.18" width="0.18" color="#60a5fa"></a-box>
+            <a-entity position="0 0.45 0" text="value: Geometria; align: center; color: #f8fafc; width: 2"></a-entity>
+          </a-marker>
+
+          <a-marker type="barcode" value="1" data-marker-label="Barcode 1">
+            <a-octahedron position="0 0.2 0" radius="0.15" color="#34d399"></a-octahedron>
+            <a-entity position="0 0.45 0" text="value: Biologia; align: center; color: #f8fafc; width: 2"></a-entity>
+          </a-marker>
+
+          <a-marker type="barcode" value="2" data-marker-label="Barcode 2">
+            <a-cone position="0 0.2 0" radius-bottom="0.14" radius-top="0.04" height="0.32" color="#f97316"></a-cone>
+            <a-entity position="0 0.48 0" text="value: Tecnologia; align: center; color: #f8fafc; width: 2"></a-entity>
+          </a-marker>
+
+          <a-marker type="barcode" value="3" data-marker-label="Barcode 3">
+            <a-cylinder position="0 0.18 0" radius="0.12" height="0.28" color="#a78bfa"></a-cylinder>
+            <a-entity position="0 0.45 0" text="value: Fisica; align: center; color: #f8fafc; width: 2"></a-entity>
+          </a-marker>
+
+          <a-marker type="barcode" value="4" data-marker-label="Barcode 4">
+            <a-torus-knot position="0 0.2 0" radius="0.1" radius-tubular="0.02" color="#f43f5e"></a-torus-knot>
+            <a-entity position="0 0.48 0" text="value: Anatomia; align: center; color: #f8fafc; width: 2"></a-entity>
+          </a-marker>
+
+          <a-entity camera></a-entity>
+        </a-scene>
+      </template>
+    </section>
 
     <script src="./app.js"></script>
   </body>

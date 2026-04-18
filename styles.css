@@ -35,6 +35,10 @@ body {
     linear-gradient(180deg, var(--bg-top) 0%, var(--bg-mid) 46%, var(--bg-bottom) 100%);
 }
 
+body.has-fullscreen-ar {
+  overflow: hidden;
+}
+
 a {
   color: inherit;
 }
@@ -297,6 +301,63 @@ button.button-secondary {
 .camera-controls .button-primary {
   width: fit-content;
   min-width: 260px;
+}
+
+.fullscreen-ar-shell {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: #000;
+}
+
+.fullscreen-ar-backdrop {
+  position: absolute;
+  inset: 0;
+  background: #000;
+}
+
+.fullscreen-ar-stage {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #000;
+}
+
+.fullscreen-ar-ui {
+  position: relative;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.fullscreen-banner {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  right: 16px;
+}
+
+.fullscreen-actions {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: 16px;
+  display: grid;
+  gap: 12px;
+  pointer-events: auto;
+}
+
+.fullscreen-actions .button-secondary,
+.fullscreen-actions .qr-status {
+  width: fit-content;
+  max-width: min(100%, 420px);
+}
+
+.fullscreen-actions .qr-status {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(231, 154, 86, 0.18);
+  background: rgba(255, 248, 240, 0.9);
 }
 
 .experience-stage {
@@ -636,6 +697,12 @@ canvas.a-canvas {
     min-width: 0;
   }
 
+  .fullscreen-actions .button-secondary,
+  .fullscreen-actions .qr-status {
+    width: 100%;
+    max-width: none;
+  }
+
   .experience-stage,
   .ar-scene-mount,
   .experience-stage canvas,
@@ -783,6 +850,12 @@ canvas.a-canvas {
   .camera-controls .qr-status {
     padding: 12px;
     border-radius: 14px;
+  }
+
+  .fullscreen-banner,
+  .fullscreen-actions {
+    left: 12px;
+    right: 12px;
   }
 
   .qr-panel {
