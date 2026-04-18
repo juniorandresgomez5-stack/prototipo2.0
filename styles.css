@@ -80,6 +80,10 @@ a {
   margin: 0 auto;
 }
 
+.hero-copy {
+  min-width: 0;
+}
+
 .summary-label,
 .status-label,
 h3 {
@@ -234,6 +238,7 @@ button.button-secondary {
   border: 1px solid var(--line);
   background: rgba(255, 248, 240, 0.86);
   box-shadow: 0 12px 24px rgba(190, 132, 86, 0.08);
+  align-content: start;
 }
 
 .marker-lesson {
@@ -277,6 +282,10 @@ button.button-secondary {
   border-radius: 16px;
   background: #fffdfa;
   border: 1px solid rgba(231, 154, 86, 0.18);
+}
+
+.marker-card .button-secondary {
+  margin-top: auto;
 }
 
 .experience-stage {
@@ -539,10 +548,32 @@ button.button-secondary {
     padding-right: 18px;
   }
 
+  h1 {
+    max-width: none;
+    font-size: clamp(1.9rem, 9vw, 3rem);
+  }
+
+  h2 {
+    font-size: clamp(1.2rem, 5.5vw, 1.9rem);
+  }
+
   .hero-actions,
   .qr-actions {
     flex-direction: column;
     align-items: stretch;
+  }
+
+  .marker-card {
+    gap: 10px;
+  }
+
+  .marker-image {
+    aspect-ratio: 1 / 1;
+    padding: 10px;
+  }
+
+  .lesson-image {
+    aspect-ratio: 16 / 10;
   }
 
   .marker-grid {
@@ -598,6 +629,10 @@ button.button-secondary {
     justify-items: stretch;
   }
 
+  .ar-launcher-single {
+    order: 2;
+  }
+
   .qr-video {
     height: 220px;
   }
@@ -636,6 +671,39 @@ button.button-secondary {
     padding: 16px;
   }
 
+  .hero-actions {
+    margin-top: 18px;
+  }
+
+  .landing-copy,
+  .marker-menu-copy,
+  .marker-description,
+  .experience-copy,
+  .qr-status {
+    font-size: 0.95rem;
+    line-height: 1.55;
+  }
+
+  .marker-menu {
+    gap: 14px;
+  }
+
+  .marker-card {
+    padding: 14px;
+    border-radius: 16px;
+  }
+
+  .marker-image {
+    aspect-ratio: 1.1 / 1;
+    padding: 8px;
+    border-radius: 14px;
+  }
+
+  .lesson-image {
+    aspect-ratio: 16 / 9;
+    border-radius: 14px;
+  }
+
   .experience-stage {
     min-height: auto;
     padding: 10px;
@@ -658,14 +726,18 @@ button.button-secondary {
   .experience-stage canvas,
   .experience-stage video,
   .experience-stage a-scene {
-    height: 50vh !important;
-    min-height: 280px;
+    height: 46vh !important;
+    min-height: 240px;
   }
 
   .qr-frame {
     width: min(62vw, 200px);
     height: min(62vw, 200px);
     border-radius: 20px;
+  }
+
+  .ar-launcher .qr-status {
+    padding: 10px;
   }
 
   .ordered-list,
