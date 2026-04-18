@@ -319,6 +319,9 @@ button.button-secondary {
   min-height: 72vh;
   position: relative;
   overflow: hidden;
+  isolation: isolate;
+  background: #201810;
+  border-radius: inherit;
 }
 
 .overlay-banner {
@@ -466,12 +469,26 @@ button.button-secondary {
 #ar-scene canvas,
 #ar-scene .a-canvas,
 .ar-scene-mount > video,
-.ar-scene-mount > canvas {
+.ar-scene-mount > canvas,
+.contained-ar-layer {
   position: absolute !important;
   inset: 0 !important;
   width: 100% !important;
   height: 100% !important;
   object-fit: cover !important;
+}
+
+#ar-scene {
+  z-index: 2;
+}
+
+.contained-ar-layer {
+  z-index: 1;
+}
+
+.a-canvas,
+canvas.a-canvas {
+  z-index: 2 !important;
 }
 
 .tips-grid {

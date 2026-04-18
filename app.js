@@ -23,6 +23,7 @@ let scene = null;
 let arStarted = false;
 let trackedMarkers = [];
 let activeMarkers = new Set();
+let arViewportSync = null;
 
 function setBannerState(type, message) {
   if (!statusLight || !liveMessage) {
@@ -81,10 +82,12 @@ function bindArEvents() {
   }
 
   scene.addEventListener("loaded", () => {
+    syncArViewport();
     setBannerState("info", "Escena cargada. Permite la camara y apunta al marcador Hiro.");
   });
 
   scene.addEventListener("camera-init", () => {
+    syncArViewport();
     setBannerState("info", "Camara activa. Busca el marcador Hiro para iniciar la proyeccion.");
   });
 
@@ -134,6 +137,40 @@ function bindArEvents() {
   }, 5000);
 }
 
+function syncArViewport() {
+  if (!arSceneMount) {
+    return;
+  }
+
+  const arVideo = document.querySelector(".arjs-video");
+  const arCanvas = document.querySelector(".a-canvas");
+  const sceneCanvas = scene ? scene.querySelector("canvas") : null;
+
+  [arVideo, arCanvas, sceneCanvas].forEach((node) => {
+    if (!node) {
+      return;
+    }
+
+    node.classList.add("contained-ar-layer");
+
+    if (node.parentElement !== arSceneMount) {
+      arSceneMount.appendChild(node);
+    }
+  });
+}
+
+function startArViewportSync() {
+  if (arViewportSync || !arSceneMount) {
+    return;
+  }
+
+  syncArViewport();
+
+  arViewportSync = window.setInterval(() => {
+    syncArViewport();
+  }, 600);
+}
+
 function mountArScene() {
   if (arStarted || !arSceneMount || !arSceneTemplate) {
     return;
@@ -152,6 +189,7 @@ function mountArScene() {
   trackedMarkers = Array.from(document.querySelectorAll("[data-marker-label]"));
   activeMarkers = new Set();
   arStarted = true;
+  startArViewportSync();
 
   if (arStatus) {
     arStatus.textContent =
